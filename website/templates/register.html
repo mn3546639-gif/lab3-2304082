@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Register</h1>
+
+    <div id="errors" style="color: red;" role="alert">
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <form id="register-form" method="post" action="/register" novalidate>
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+
+        <label for="confirm_password">Confirm password:</label><br>
+        <input type="password" id="confirm_password"
+               name="confirm_password"><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='validation.js') }}"></script>
+</body>
+</html>

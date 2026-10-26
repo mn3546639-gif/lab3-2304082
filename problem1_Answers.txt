@@ -1,0 +1,98 @@
+Q1.1
+
+SQL used:
+
+USE company;
+
+INSERT INTO DEPARTMENT
+    (Dnumber, Dname, mgr_ssn, mgr_start_date)
+VALUES
+    (4, 'Research', '123456789', '2026-01-01');
+
+DELETE FROM EMPLOYEE
+WHERE ssn = '123456789';
+
+Results:
+
+INSERT: 1 row affected.
+
+DELETE:
+Error Code: 1451. Cannot delete or update a parent row:
+a foreign key constraint fails (`company`.`department`,
+CONSTRAINT `fk_department_manager`
+FOREIGN KEY (`mgr_ssn`) REFERENCES `employee` (`ssn`)).
+
+Explanation:
+
+The department references this employee as its manager.
+Deleting the employee would violate referential integrity.
+MySQL rejects the deletion, and the employee remains
+in the EMPLOYEE table.
+
+
+Q1.2
+
+SQL used:
+
+USE company;
+
+INSERT INTO PROJECT
+    (Pnumber, Pname, Plocation, Dno)
+VALUES
+    (104, 'Test Project', 'Cairo', 99);
+
+Result:
+
+Error Code: 1452. Cannot add or update a child row:
+a foreign key constraint fails (`company`.`project`,
+CONSTRAINT `project_ibfk_1`
+FOREIGN KEY (`Dno`) REFERENCES `department` (`Dnumber`)).
+
+Explanation:
+
+Department 99 does not exist in the DEPARTMENT table.
+The project's Dno must reference an existing department.
+MySQL rejects the insertion because it violates
+referential integrity. Project 104 is not inserted.
+
+
+Q1.3
+
+Explanation:
+
+If mgr_ssn and Dno are both NOT NULL, we cannot use
+temporary NULL values. With both foreign keys enforced,
+neither the first employee nor the first department
+can be inserted because each references the other.
+
+Solution:
+
+1. Create DEPARTMENT with mgr_ssn NOT NULL, but postpone
+   adding its foreign key to EMPLOYEE.
+2. Create EMPLOYEE with Dno NOT NULL and its foreign key
+   referencing DEPARTMENT.
+3. Insert the department with the intended manager's SSN.
+4. Insert the employee referencing that department.
+5. Add the manager foreign key using ALTER TABLE.
+
+SQL used after creating the tables as described:
+
+INSERT INTO DEPARTMENT
+    (Dnumber, Dname, mgr_ssn, mgr_start_date)
+VALUES
+    (1, 'IT', '123456789', '2025-01-01');
+
+INSERT INTO EMPLOYEE
+    (ssn, fname, lname, bdate, address, gender, salary, Dno)
+VALUES
+    ('123456789', 'Ahmed', 'Ali', '1990-05-15',
+     'Alexandria', 'M', 15000.00, 1);
+
+ALTER TABLE DEPARTMENT
+ADD CONSTRAINT fk_department_manager
+FOREIGN KEY (mgr_ssn)
+REFERENCES EMPLOYEE(ssn);
+
+Expected result (theoretical example, not executed):
+Both inserts succeed, and the foreign key is added
+successfully because all references are valid.

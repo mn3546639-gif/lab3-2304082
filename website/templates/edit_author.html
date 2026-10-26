@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Author</title>
+</head>
+<body>
+    <h1>Edit Author</h1>
+
+    <p>Author ID: {{ author["author_id"] }}</p>
+
+    {% for error in errors %}
+        <p style="color: red;">{{ error }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        <label for="name">Name:</label><br>
+        <input id="name" type="text" name="name"
+               value="{{ author['name'] }}"
+               maxlength="100" required>
+        <br><br>
+
+        <label for="country">Country:</label><br>
+        <input id="country" type="text" name="country"
+               value="{{ author['country'] or '' }}"
+               maxlength="50" required>
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <p><a href="/library">Back to Library</a></p>
+</body>
+</html>

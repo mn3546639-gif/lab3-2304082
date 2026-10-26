@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Book</title>
+</head>
+<body>
+    <h1>Edit Book</h1>
+
+    <p>Book ID: {{ book["book_id"] }}</p>
+
+    {% for error in errors %}
+        <p style="color: red;">{{ error }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        <label for="title">Title:</label><br>
+        <input id="title" type="text" name="title"
+               value="{{ book['title'] }}"
+               maxlength="150" required>
+        <br><br>
+
+        <label for="price">Price:</label><br>
+        <input id="price" type="number" name="price"
+               value="{{ book['price'] }}"
+               min="0" max="99999999.99" step="0.01" required>
+        <br><br>
+
+        <label for="author_id">Author:</label><br>
+        <select id="author_id" name="author_id" required>
+            <option value="">Choose an author</option>
+
+            {% for author in authors %}
+                <option value="{{ author['author_id'] }}"
+                    {% if author["author_id"]|string ==
+                          book["author_id"]|string %}
+                        selected
+                    {% endif %}>
+                    {{ author["author_id"] }} - {{ author["name"] }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <p><a href="/library">Back to Library</a></p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Author</title>
+</head>
+<body>
+    <h1>Add Author</h1>
+
+    {% for error in errors %}
+        <p style="color: red;">{{ error }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        <label for="author_id">Author ID:</label><br>
+        <input id="author_id" type="number" name="author_id"
+               min="1" max="2147483647" required>
+        <br><br>
+
+        <label for="name">Name:</label><br>
+        <input id="name" type="text" name="name"
+               maxlength="100" required>
+        <br><br>
+
+        <label for="country">Country:</label><br>
+        <input id="country" type="text" name="country"
+               maxlength="50" required>
+        <br><br>
+
+        <button type="submit">Save Author</button>
+    </form>
+
+    <p><a href="/library">Back to Library</a></p>
+</body>
+</html>

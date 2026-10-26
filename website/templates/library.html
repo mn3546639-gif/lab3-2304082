@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library</title>
+</head>
+<body>
+    <h1>Library</h1>
+
+    <p>
+        <a href="/add_author">Add Author</a>
+        |
+        <a href="/add_book">Add Book</a>
+    </p>
+
+    <a href="/todos">Back to my website</a>
+
+    <h2>Authors</h2>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Author ID</th>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for author in authors %}
+        <tr>
+            <td>{{ author["author_id"] }}</td>
+            <td>{{ author["name"] }}</td>
+            <td>{{ author["country"] }}</td>
+
+            <td>
+                <a href="/edit_author/{{ author['author_id'] }}">
+                    Edit
+                </a>
+
+                <form
+                    method="POST"
+                    action="/delete_author/{{ author['author_id'] }}"
+                    style="display: inline;"
+                    onsubmit="return confirm(
+                        'Delete this author and all their books?'
+                    );"
+                >
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p>Deleting an author also deletes all their books.</p>
+
+    <h2>Books</h2>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Author ID</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for book in books %}
+        <tr>
+            <td>{{ book["book_id"] }}</td>
+            <td>{{ book["title"] }}</td>
+            <td>{{ book["price"] }}</td>
+            <td>{{ book["author_id"] }}</td>
+
+            <td>
+                <a href="/edit_book/{{ book['book_id'] }}">
+                    Edit
+                </a>
+
+                <form
+                    method="POST"
+                    action="/delete_book/{{ book['book_id'] }}"
+                    style="display: inline;"
+                    onsubmit="return confirm('Delete this book?');"
+                >
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
